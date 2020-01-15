@@ -1,11 +1,5 @@
-stage("build docker") {
-        customImage = docker.build("yaeldoc1/jenkins")
-        withDockerRegistry(registry:[
-                credentialsId: 'dockerhub.yaeldoc1'
-                ]) {
-            customImage.push()
-        }
+node("linux") {
+    stage('Run container') {
+        sh "docker run -d --name training -p 8080:5000 training/webapp"
     }
-stage("verify dockers") {
-    sh "docker images"
 }
