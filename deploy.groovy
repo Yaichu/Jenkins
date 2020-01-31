@@ -1,10 +1,9 @@
-node("docker") {
-    stage("build") {
-        customImage = docker.build("proj_app")
+node("linux") {
+    stage ("pull image") {
+        sh 'docker pull docker.io/training/webapp'
     }
-
-    // stage('Run container') {
-    //     sh "docker stop training && docker rm training"
-    //     sh "docker run -d --restart always --name training -p 8080:5000 training/webapp"
-    // }
+    stage("deploy webapp") {
+        sh "kubectl apply -f k8sdeploy.yml"
+        sh "kubectl apply -f k8sservice.yml"
+    }
 }
